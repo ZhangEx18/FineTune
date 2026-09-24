@@ -118,6 +118,7 @@ final class MediaKeyMonitor {
         ) else {
             logger.error("CGEvent.tapCreate returned nil — media keys will not be intercepted")
             mediaKeyStatus.isOffline = true
+            mediaKeyStatus.failureReason = .eventTapCreation
             return
         }
 
@@ -128,6 +129,7 @@ final class MediaKeyMonitor {
         self.tap = newTap
         self.runLoopSource = source
         self.mediaKeyStatus.isOffline = false
+        self.mediaKeyStatus.failureReason = nil
         logger.info("Media key tap installed")
     }
 
@@ -190,6 +192,7 @@ final class MediaKeyMonitor {
             if !CGEvent.tapIsEnabled(tap: tap) {
                 self.logger.error("Ghost-tap probe: tap reports disabled after regrant/wake — marking offline")
                 self.mediaKeyStatus.isOffline = true
+                self.mediaKeyStatus.failureReason = .disabledBySystem
             }
             self.ghostTapProbeTask = nil
         }
@@ -351,6 +354,7 @@ final class MediaKeyMonitor {
             // Second disable inside the 5s window — feature is offline.
             logger.error("Second tap-disable inside watchdog window; marking media keys offline")
             mediaKeyStatus.isOffline = true
+            mediaKeyStatus.failureReason = .disabledBySystem
             disableWatchdogTask?.cancel()
             disableWatchdogTask = nil
             watchdogOpen = false
