@@ -1528,7 +1528,8 @@ final class AudioEngine {
             installAliveWatcher(deviceID: device.id, uid: deviceUID, name: deviceName)
         }
 
-        if autoSwitchEligible, deviceUID != currentDefault, let connectedDevice {
+        if settingsManager.appSettings.autoSwitchNewHeadphoneOutput,
+           autoSwitchEligible, deviceUID != currentDefault, let connectedDevice {
             if deviceVolumeMonitor.setDefaultDevice(connectedDevice.id) {
                 outputEchoTracker.increment(deviceUID)
                 lastConfirmedDefaultUID = deviceUID
@@ -1546,7 +1547,8 @@ final class AudioEngine {
             outputPriorityState = .stable
         }
 
-        guard autoSwitchEligible else {
+        guard settingsManager.appSettings.autoSwitchNewHeadphoneOutput,
+              autoSwitchEligible else {
             outputPriorityState = .stable
             return
         }
@@ -2128,15 +2130,24 @@ final class AudioEngine {
 
     /// Called when an input device connects — restores locked/preferred device and guards against auto-switch.
     private func handleInputDeviceConnected(_ deviceUID: String, name deviceName: String) {
-        guard settingsManager.appSettings.lockInputDevice else { return }
+        guard let connectedDevice = deviceMonitor.inputDevice(for: deviceUID) else { return }
+
+        if !settingsManager.appSettings.lockInputDevice {
+            if deviceVolumeMonitor.defaultInputDeviceUID != deviceUID,
+               deviceVolumeMonitor.setDefaultInputDevice(connectedDevice.id) {
+                inputEchoTracker.increment(deviceUID)
+                logger.info("New microphone connected, switched default input → \(deviceName)")
+            }
+            inputPriorityState = .stable
+            return
+        }
 
         // If the reconnected device is the user's preferred device, restore the lock to it
         if let preferredUID = settingsManager.preferredInputDeviceUID,
            deviceUID == preferredUID,
-           settingsManager.lockedInputDeviceUID != preferredUID,
-           let device = deviceMonitor.inputDevice(for: deviceUID) {
+           settingsManager.lockedInputDeviceUID != preferredUID {
             logger.info("Preferred input device reconnected: \(deviceName), restoring lock")
-            settingsManager.setLockedInputDeviceUID(device.uid)
+            settingsManager.setLockedInputDeviceUID(connectedDevice.uid)
         }
 
         // Restore the user's locked device (not priority-based — lock overrides priority)
