@@ -5,6 +5,7 @@ import SwiftUI
 /// AX revocation surfaces via the permission card instead).
 @MainActor
 struct MediaKeyOfflineCard: View {
+    @Bindable var status: MediaKeyStatus
     let onRetry: () -> Void
 
     var body: some View {
@@ -24,7 +25,7 @@ struct MediaKeyOfflineCard: View {
                     Spacer(minLength: DesignTokens.Spacing.xs)
                 }
 
-                Text("The system disabled FineTune's event tap — usually after a sleep/wake cycle or a main-thread stall. Retry to reinstall it.")
+                Text(message)
                     .font(DesignTokens.Typography.caption)
                     .foregroundStyle(DesignTokens.Colors.textTertiary)
                     .fixedSize(horizontal: false, vertical: true)
@@ -58,13 +59,22 @@ struct MediaKeyOfflineCard: View {
         .accessibilityElement(children: .combine)
         .accessibilityLabel("Media keys offline. Retry to reinstall the event tap.")
     }
+
+    private var message: String {
+        switch status.failureReason {
+        case .eventTapCreation:
+            "FineTune 无法创建媒体键监听器。请确认已允许辅助功能权限，然后重试。"
+        case .disabledBySystem, .none:
+            "系统禁用了 FineTune 的媒体键监听器，通常发生在睡眠唤醒或系统卡顿后。重试即可重新安装。"
+        }
+    }
 }
 
 // MARK: - Previews
 
 #Preview("Offline Card") {
     PreviewContainer {
-        MediaKeyOfflineCard(onRetry: {})
+        MediaKeyOfflineCard(status: MediaKeyStatus(), onRetry: {})
             .frame(width: 420)
             .padding()
     }

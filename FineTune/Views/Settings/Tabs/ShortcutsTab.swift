@@ -70,7 +70,7 @@ struct ShortcutsTab: View {
 
             if mediaKeyStatus.isOffline {
                 SettingsRowDivider()
-                MediaKeyOfflineCard {
+                MediaKeyOfflineCard(status: mediaKeyStatus) {
                     mediaKeyMonitor.reconcile()
                 }
                 .padding(.horizontal, 16)
