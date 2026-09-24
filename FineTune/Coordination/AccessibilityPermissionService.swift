@@ -23,6 +23,7 @@ final class AccessibilityPermissionService: AccessibilityTrustProviding {
     var onTrustChanged: ((Bool) -> Void)?
 
     private var trustObserver: NSObjectProtocol?
+    private var applicationActivationObserver: NSObjectProtocol?
     private var debounceTask: Task<Void, Never>?
     private var pollingTask: Task<Void, Never>?
 
@@ -63,6 +64,21 @@ final class AccessibilityPermissionService: AccessibilityTrustProviding {
                 }
             }
         }
+        if applicationActivationObserver == nil {
+            applicationActivationObserver = NotificationCenter.default.addObserver(
+                forName: NSApplication.didBecomeActiveNotification,
+                object: NSApp,
+                queue: .main
+            ) { [weak self] _ in
+                // TCC may commit the Accessibility change while System Settings
+                // is still closing. Re-check once immediately and once shortly
+                // afterwards when FineTune returns to the foreground.
+                MainActor.assumeIsolated {
+                    self?.refresh()
+                    self?.scheduleDebouncedRefresh()
+                }
+            }
+        }
         guard pollingTask == nil else { return }
         pollingTask = Task { @MainActor [weak self] in
             while !Task.isCancelled {
@@ -82,6 +98,10 @@ final class AccessibilityPermissionService: AccessibilityTrustProviding {
         if let observer = trustObserver {
             DistributedNotificationCenter.default().removeObserver(observer)
             trustObserver = nil
+        }
+        if let observer = applicationActivationObserver {
+            NotificationCenter.default.removeObserver(observer)
+            applicationActivationObserver = nil
         }
     }
 

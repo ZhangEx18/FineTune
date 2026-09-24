@@ -2282,12 +2282,12 @@
         }
       }
     },
-    "FineTune needs Accessibility to intercept F10 / F11 / F12.": {
+    "FineTune needs Accessibility to intercept F10 / F11 / F12. If already enabled, quit and reopen FineTune.": {
       "localizations": {
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "FineTune 需要辅助功能权限来拦截 F10 / F11 / F12。"
+            "value": "FineTune 需要辅助功能权限才能拦截 F10 / F11 / F12。若系统设置中已打开权限，请完全退出并重新打开 FineTune。"
           }
         }
       }
