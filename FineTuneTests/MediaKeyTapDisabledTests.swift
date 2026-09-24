@@ -76,6 +76,7 @@ struct MediaKeyTapDisabledTests {
         // Second disable within the window → marks offline.
         monitor.handleTapDisabled()
         #expect(status.isOffline == true)
+        #expect(status.failureReason == .disabledBySystem)
         #expect(monitor.watchdogOpen == false)
     }
 
@@ -103,6 +104,7 @@ struct MediaKeyTapDisabledTests {
         // stalls), does NOT arm the watchdog; instead tears down and calls
         // accessibility.refresh() so the UI surfaces the permission card.
         #expect(status.isOffline == false)
+        #expect(status.failureReason == nil)
         #expect(monitor.watchdogOpen == false)
         #expect(accessibility.refreshCallCount == 1)
     }
