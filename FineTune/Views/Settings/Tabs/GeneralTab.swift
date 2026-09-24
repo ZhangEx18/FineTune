@@ -1,5 +1,6 @@
 // FineTune/Views/Settings/Tabs/GeneralTab.swift
 import AppKit
+import AVFoundation
 import SwiftUI
 
 @MainActor
@@ -10,6 +11,7 @@ struct GeneralTab: View {
     let onResetAll: () -> Void
 
     @State private var showResetConfirmation = false
+    @State private var microphoneAuthorizationStatus = AVCaptureDevice.authorizationStatus(for: .audio)
 
     var body: some View {
         ScrollView {
@@ -33,6 +35,10 @@ struct GeneralTab: View {
             Button("Cancel", role: .cancel) {}
         } message: {
             Text("This cannot be undone.")
+        }
+        .onAppear { refreshMicrophoneAuthorization() }
+        .onReceive(NotificationCenter.default.publisher(for: NSApplication.didBecomeActiveNotification)) { _ in
+            refreshMicrophoneAuthorization()
         }
     }
 
@@ -67,7 +73,23 @@ struct GeneralTab: View {
                 .buttonStyle(.plain)
                 .foregroundStyle(DesignTokens.Colors.accentPrimary)
             }
+            SettingsRowDivider()
+            SettingsRow(
+                "麦克风",
+                description: "处理输入设备音频时需要"
+            ) {
+                permissionStatus(microphoneGranted)
+                Button("打开设置") {
+                    requestMicrophoneAccess()
+                }
+                .buttonStyle(.plain)
+                .foregroundStyle(DesignTokens.Colors.accentPrimary)
+            }
         }
+    }
+
+    private var microphoneGranted: Bool {
+        microphoneAuthorizationStatus == .authorized
     }
 
     private func permissionStatus(_ granted: Bool) -> some View {
@@ -86,6 +108,25 @@ struct GeneralTab: View {
         if let settingsURL = URL(string: url) {
             NSWorkspace.shared.open(settingsURL)
         }
+    }
+
+    private func requestMicrophoneAccess() {
+        if microphoneAuthorizationStatus == .denied || microphoneAuthorizationStatus == .restricted {
+            let url = "x-apple.systempreferences:com.apple.preference.security?Privacy_Microphone"
+            if let settingsURL = URL(string: url) {
+                NSWorkspace.shared.open(settingsURL)
+            }
+            return
+        }
+        AVCaptureDevice.requestAccess(for: .audio) { _ in
+            Task { @MainActor in
+                refreshMicrophoneAuthorization()
+            }
+        }
+    }
+
+    private func refreshMicrophoneAuthorization() {
+        microphoneAuthorizationStatus = AVCaptureDevice.authorizationStatus(for: .audio)
     }
 
     // MARK: - General
