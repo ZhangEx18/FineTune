@@ -4,13 +4,13 @@
 
 Control the volume of every app independently, boost quiet ones up to 4x, route audio to different speakers, and shape your sound with EQ and headphone correction. Lives in your menu bar. Free and open-source.
 
-<a href="https://github.com/ronitsingh10/FineTune/releases/latest/download/FineTune.dmg"><img src="assets/download-badge.svg" alt="Download for macOS" height="48"/></a>
+<a href="https://github.com/ZhangEx18/FineTune/releases/latest/download/FineTune.dmg"><img src="assets/download-badge.svg" alt="Download for macOS" height="48"/></a>
 
 <br clear="all"/>
 
 <p align="center">
-  <a href="https://github.com/ronitsingh10/FineTune/releases/latest"><img src="https://img.shields.io/github/v/release/ronitsingh10/FineTune?style=for-the-badge&labelColor=1c1c1e&color=0A84FF&logo=github&logoColor=white" alt="Latest Release"></a>
-  <a href="https://github.com/ronitsingh10/FineTune/releases"><img src="https://img.shields.io/github/downloads/ronitsingh10/FineTune/total?style=for-the-badge&labelColor=1c1c1e&color=3a3a3c" alt="Downloads"></a>
+  <a href="https://github.com/ZhangEx18/FineTune/releases/latest"><img src="https://img.shields.io/github/v/release/ZhangEx18/FineTune?style=for-the-badge&labelColor=1c1c1e&color=0A84FF&logo=github&logoColor=white" alt="Latest Release"></a>
+  <a href="https://github.com/ZhangEx18/FineTune/releases"><img src="https://img.shields.io/github/downloads/ZhangEx18/FineTune/total?style=for-the-badge&labelColor=1c1c1e&color=3a3a3c" alt="Downloads"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-GPLv3-3a3a3c?style=for-the-badge&labelColor=1c1c1e" alt="License: GPL v3"></a>
   <a href="https://www.apple.com/macos/"><img src="https://img.shields.io/badge/macOS-15%2B-3a3a3c?style=for-the-badge&labelColor=1c1c1e&logo=apple&logoColor=white" alt="macOS 15+"></a>
 </p>
@@ -34,7 +34,7 @@ Control the volume of every app independently, boost quiet ones up to 4x, route 
 brew install --cask finetune
 ```
 
-**Manual** — [Download latest release](https://github.com/ronitsingh10/FineTune/releases/latest)
+**Manual** — [Download latest release](https://github.com/ZhangEx18/FineTune/releases/latest)
 
 ## Quick Start
 
@@ -100,13 +100,13 @@ That's it. Adjust sliders, route audio, and explore EQ from the menu bar.
 ## Contributing
 
 - **Star this repo** — Help others discover FineTune
-- **Report bugs** — [Open an issue](https://github.com/ronitsingh10/FineTune/issues)
+- **Report bugs** — [Open an issue](https://github.com/ZhangEx18/FineTune/issues)
 - **Contribute code** — See [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ### Build from Source
 
 ```bash
-git clone https://github.com/ronitsingh10/FineTune.git
+git clone https://github.com/ZhangEx18/FineTune.git
 cd FineTune
 open FineTune.xcodeproj
 ```
