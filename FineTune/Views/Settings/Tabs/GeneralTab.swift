@@ -1,9 +1,12 @@
 // FineTune/Views/Settings/Tabs/GeneralTab.swift
+import AppKit
 import SwiftUI
 
 @MainActor
 struct GeneralTab: View {
     @Bindable var settings: SettingsManager
+    @Bindable var permission: AudioRecordingPermission
+    @Bindable var accessibility: AccessibilityPermissionService
     let onResetAll: () -> Void
 
     @State private var showResetConfirmation = false
@@ -12,6 +15,7 @@ struct GeneralTab: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 24) {
                 generalSection
+                permissionsSection
                 menuBarSection
                 dataSection
             }
@@ -29,6 +33,58 @@ struct GeneralTab: View {
             Button("Cancel", role: .cancel) {}
         } message: {
             Text("This cannot be undone.")
+        }
+    }
+
+    // MARK: - Permissions
+
+    private var permissionsSection: some View {
+        SettingsSection("权限") {
+            SettingsRow(
+                "辅助功能",
+                description: "拦截 F10、F11、F12 媒体键"
+            ) {
+                permissionStatus(accessibility.isTrustedCached)
+                Button("打开设置") {
+                    accessibility.requestAccess()
+                }
+                .buttonStyle(.plain)
+                .foregroundStyle(DesignTokens.Colors.accentPrimary)
+            }
+            SettingsRowDivider()
+            SettingsRow(
+                "音频采集",
+                description: "控制单个应用音量和路由时需要"
+            ) {
+                permissionStatus(permission.status == .authorized)
+                Button("打开设置") {
+                    if permission.status == .denied {
+                        openAudioCaptureSettings()
+                    } else {
+                        permission.request()
+                    }
+                }
+                .buttonStyle(.plain)
+                .foregroundStyle(DesignTokens.Colors.accentPrimary)
+            }
+        }
+    }
+
+    private func permissionStatus(_ granted: Bool) -> some View {
+        HStack(spacing: 5) {
+            Circle()
+                .fill(granted ? DesignTokens.Colors.vuGreen : DesignTokens.Colors.textTertiary)
+                .frame(width: 6, height: 6)
+            Text(granted ? "已允许" : "未允许")
+                .font(DesignTokens.Typography.caption)
+                .foregroundStyle(DesignTokens.Colors.textSecondary)
+        }
+    }
+
+    private func openAudioCaptureSettings() {
+        let url = "x-apple.systempreferences:com.apple.settings.PrivacySecurity.extension?Privacy_ScreenCapture"
+        if let settingsURL = URL(string: url) {
+            NSWorkspace.shared.open(settingsURL)
         }
     }
 
