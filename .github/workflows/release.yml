@@ -25,6 +25,9 @@ jobs:
         with:
           node-version: '20'
 
+      - name: Check Simplified Chinese localization
+        run: ./scripts/check-localization.sh
+
       - name: Install create-dmg dependencies
         run: brew install graphicsmagick imagemagick
 

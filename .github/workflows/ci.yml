@@ -23,6 +23,9 @@ jobs:
         with:
           xcode-version: latest-stable
 
+      - name: Check Simplified Chinese localization
+        run: ./scripts/check-localization.sh
+
       - name: Build
         run: |
           xcodebuild build \
