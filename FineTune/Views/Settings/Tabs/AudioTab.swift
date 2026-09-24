@@ -35,6 +35,11 @@ struct AudioTab: View {
         .scrollIndicators(.never)
         .onAppear { updateSortedDevices() }
         .onChange(of: audioEngine.outputDevices) { _, _ in updateSortedDevices() }
+        .onChange(of: settings.appSettings.lockInputDevice) { oldValue, newValue in
+            if !oldValue && newValue {
+                audioEngine.handleInputLockEnabled()
+            }
+        }
         .onChange(of: settings.appSettings.loudnessCompensationEnabled) { _, newValue in
             audioEngine.setLoudnessCompensationEnabled(newValue)
         }
@@ -74,6 +79,32 @@ struct AudioTab: View {
 
     private var devicesSection: some View {
         SettingsSection("Devices") {
+            SettingsRow(
+                "Auto-switch headphone output",
+                description: "Make a newly connected Bluetooth, USB, or headphone device the default output immediately"
+            ) {
+                Toggle("", isOn: $settings.appSettings.autoSwitchNewHeadphoneOutput)
+                    .toggleStyle(.switch)
+                    .controlSize(.small)
+                    .labelsHidden()
+            }
+            SettingsRowDivider()
+            SettingsRow(
+                "Auto-switch microphone",
+                description: "Make a newly connected microphone the default input immediately"
+            ) {
+                Toggle(
+                    "",
+                    isOn: Binding(
+                        get: { !settings.appSettings.lockInputDevice },
+                        set: { settings.appSettings.lockInputDevice = !$0 }
+                    )
+                )
+                .toggleStyle(.switch)
+                .controlSize(.small)
+                .labelsHidden()
+            }
+            SettingsRowDivider()
             SettingsRow(
                 "System Sounds",
                 description: "Where alerts and effects play"

@@ -4,7 +4,6 @@ import SwiftUI
 @MainActor
 struct GeneralTab: View {
     @Bindable var settings: SettingsManager
-    @Bindable var audioEngine: AudioEngine
     let onResetAll: () -> Void
 
     @State private var showResetConfirmation = false
@@ -21,11 +20,6 @@ struct GeneralTab: View {
             .frame(maxWidth: .infinity, alignment: .leading)
         }
         .scrollIndicators(.never)
-        .onChange(of: settings.appSettings.lockInputDevice) { oldValue, newValue in
-            if !oldValue && newValue {
-                audioEngine.handleInputLockEnabled()
-            }
-        }
         .confirmationDialog(
             "Reset all settings?",
             isPresented: $showResetConfirmation,
@@ -67,32 +61,6 @@ struct GeneralTab: View {
                     .toggleStyle(.switch)
                     .controlSize(.small)
                     .labelsHidden()
-            }
-            SettingsRowDivider()
-            SettingsRow(
-                "Auto-switch headphone output",
-                description: "Make a newly connected Bluetooth, USB, or headphone device the default output immediately"
-            ) {
-                Toggle("", isOn: $settings.appSettings.autoSwitchNewHeadphoneOutput)
-                    .toggleStyle(.switch)
-                    .controlSize(.small)
-                    .labelsHidden()
-            }
-            SettingsRowDivider()
-            SettingsRow(
-                "Auto-switch microphone",
-                description: "Make a newly connected microphone the default input immediately"
-            ) {
-                Toggle(
-                    "",
-                    isOn: Binding(
-                        get: { !settings.appSettings.lockInputDevice },
-                        set: { settings.appSettings.lockInputDevice = !$0 }
-                    )
-                )
-                .toggleStyle(.switch)
-                .controlSize(.small)
-                .labelsHidden()
             }
         }
     }

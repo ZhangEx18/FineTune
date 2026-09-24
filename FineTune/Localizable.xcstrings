@@ -82,7 +82,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "应用此校正配置"
+            "value": "应用此校正方案"
           }
         }
       }
@@ -112,7 +112,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "自动检测的音量控制：%@"
+            "value": "自动检测的音量控制方式：%@"
           }
         }
       }
@@ -132,7 +132,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "AutoEQ 校正"
+            "value": "AutoEQ 耳机校正"
           }
         }
       }
@@ -172,7 +172,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "无法隐藏默认设备"
+            "value": "默认设备无法隐藏"
           }
         }
       }
@@ -222,7 +222,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "关闭设备详情"
+            "value": "关闭设备信息"
           }
         }
       }
@@ -242,7 +242,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "收起设备详情"
+            "value": "收起设备信息"
           }
         }
       }
@@ -312,7 +312,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "默认"
+            "value": "默认设备"
           }
         }
       }
@@ -362,7 +362,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "设备详情"
+            "value": "设备信息"
           }
         }
       }
@@ -402,7 +402,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "拖动或输入数字设置优先级"
+            "value": "拖动或输入数字调整优先级"
           }
         }
       }
@@ -412,7 +412,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "编辑优先级位置"
+            "value": "编辑优先级顺序"
           }
         }
       }
@@ -453,7 +453,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "展开设备详情"
+            "value": "展开设备信息"
           }
         }
       }
@@ -526,7 +526,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "从主界面隐藏"
+            "value": "从主界面隐藏此应用"
           }
         }
       }
@@ -537,7 +537,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "忽略应用"
+            "value": "忽略此应用"
           }
         }
       }
@@ -547,7 +547,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "已忽略"
+            "value": "已忽略此应用"
           }
         }
       }
@@ -587,7 +587,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "正在加载耳机目录…"
+            "value": "正在加载耳机列表…"
           }
         }
       }
@@ -637,7 +637,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "没有正在播放音频的应用"
+            "value": "当前没有应用正在播放音频"
           }
         }
       }
@@ -647,7 +647,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "未启用校正"
+            "value": "尚未启用校正"
           }
         }
       }
@@ -657,7 +657,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "未启用校正。请搜索或从下方收藏中选择。"
+            "value": "尚未启用校正。请搜索，或从下方收藏中选择。"
           }
         }
       }
@@ -687,7 +687,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "多设备模式下不可用"
+            "value": "多设备模式不可用"
           }
         }
       }
@@ -727,7 +727,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "打开设备详情"
+            "value": "打开设备信息"
           }
         }
       }
@@ -747,7 +747,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "打开文件选择器以选择 ParametricEQ.txt 文件"
+            "value": "打开文件选择器，选择 ParametricEQ.txt 文件"
           }
         }
       }
@@ -827,7 +827,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "将 FineTune 加入辅助功能列表并打开系统设置。"
+            "value": "将 FineTune 添加到辅助功能列表并打开系统设置。"
           }
         }
       }
@@ -917,7 +917,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "恢复默认"
+            "value": "恢复默认图标"
           }
         }
       }
@@ -1017,7 +1017,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "搜索或从下方收藏中选择"
+            "value": "搜索，或从下方收藏中选择"
           }
         }
       }
@@ -1027,7 +1027,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "设为默认"
+            "value": "设为默认设备"
           }
         }
       }
@@ -1067,7 +1067,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "显示 %lld / %lld 条结果"
+            "value": "显示 %lld/%lld 个结果"
           }
         }
       }
@@ -1127,7 +1127,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "仅在音量滑块无效时开启。FineTune 会记住每台设备的选择。"
+            "value": "仅当音量滑块不起作用时开启。FineTune 会为每台设备记住此设置。"
           }
         }
       }
@@ -1347,7 +1347,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "设备断开提醒"
+            "value": "设备断开通知"
           }
         }
       }
@@ -1367,7 +1367,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "自动切换耳机输出"
+            "value": "新接入耳机自动设为默认输出"
           }
         }
       }
@@ -1377,7 +1377,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "新接入的蓝牙、USB 或耳机类设备立即成为默认输出"
+            "value": "新接入蓝牙、USB 或耳机设备时，立即切换为默认输出"
           }
         }
       }
@@ -1387,7 +1387,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "自动切换麦克风"
+            "value": "新接入麦克风自动设为默认输入"
           }
         }
       }
@@ -1397,7 +1397,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "新接入的麦克风立即成为默认输入"
+            "value": "新接入麦克风时，立即切换为默认输入"
           }
         }
       }
@@ -1447,7 +1447,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "小尺寸可显示更多内容，大尺寸留出更多空间。"
+            "value": "紧凑布局可显示更多内容，宽松布局留出更大的操作空间。"
           }
         }
       }
@@ -1577,7 +1577,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "提示音与音效的播放设备"
+            "value": "选择提示音与音效的播放设备"
           }
         }
       }
@@ -1597,7 +1597,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "提醒和通知的音量"
+            "value": "通知与提示音的音量"
           }
         }
       }
@@ -1607,7 +1607,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "音量步长"
+            "value": "音量调整步长"
           }
         }
       }
@@ -1617,7 +1617,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "每次按键改变的音量，适用于媒体键、自定义快捷键和弹窗中的方向键。"
+            "value": "每次按键调整的音量，适用于媒体键、自定义快捷键和弹窗中的方向键。"
           }
         }
       }
@@ -1647,7 +1647,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "使用 F11/F12（或音量键）控制 FineTune"
+            "value": "使用 F11/F12（或音量键）控制 FineTune 音量"
           }
         }
       }
@@ -1697,7 +1697,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "调高正在播放音频的应用音量"
+            "value": "增大正在播放音频的应用音量"
           }
         }
       }
@@ -1707,7 +1707,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "调低正在播放音频的应用音量"
+            "value": "减小正在播放音频的应用音量"
           }
         }
       }
@@ -1887,7 +1887,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "粗调 (12.5%)"
+            "value": "大步调节（12.5%）"
           }
         }
       }
@@ -1897,7 +1897,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "标准 (6.25%)"
+            "value": "标准调节（6.25%）"
           }
         }
       }
@@ -1907,7 +1907,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "精细 (3.13%)"
+            "value": "细步调节（3.13%）"
           }
         }
       }
@@ -1917,7 +1917,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "超精细 (1.56%)"
+            "value": "微步调节（1.56%）"
           }
         }
       }
@@ -1977,7 +1977,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "平直"
+            "value": "平坦"
           }
         }
       }
@@ -2197,7 +2197,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "连接方式"
+            "value": "传输方式"
           }
         }
       }
@@ -2447,7 +2447,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "应用音量增大"
+            "value": "增大应用音量"
           }
         }
       }
@@ -2457,7 +2457,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "应用音量减小"
+            "value": "减小应用音量"
           }
         }
       }
@@ -2657,7 +2657,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "正由 %@ 独占使用 (PID %lld)"
+            "value": "%@ 正在独占使用（PID %lld）"
           }
         }
       }
@@ -2667,7 +2667,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "正由 PID %lld 独占使用"
+            "value": "PID %lld 正在独占使用"
           }
         }
       }
@@ -2757,7 +2757,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "无法获取耳机目录"
+            "value": "无法获取耳机列表"
           }
         }
       }
@@ -2837,7 +2837,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "连接器及其他"
+            "value": "连接器与其他"
           }
         }
       }
