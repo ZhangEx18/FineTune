@@ -61,7 +61,7 @@ struct ShortcutsTab: View {
                     .labelsHidden()
             }
 
-            if !accessibility.isTrustedCached {
+            if settings.appSettings.mediaKeyControlEnabled && !accessibility.isTrustedCached {
                 SettingsRowDivider()
                 AccessibilityPromptStrip(accessibility: accessibility)
                     .padding(.horizontal, 16)
