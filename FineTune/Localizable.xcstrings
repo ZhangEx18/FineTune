@@ -2261,22 +2261,22 @@
         }
       }
     },
-    "Access granted — volume keys now control FineTune.": {
+    "Accessibility access is granted.": {
       "localizations": {
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "已获得权限，音量键现在由 FineTune 控制。"
+            "value": "辅助功能权限已允许。"
           }
         }
       }
     },
-    "FineTune needs Accessibility to intercept F10 / F11 / F12. If already enabled, quit and reopen FineTune.": {
+    "Media keys need Accessibility. If already allowed but unavailable, remove FineTune in System Settings, add the installed app again, and relaunch.": {
       "localizations": {
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "FineTune 需要辅助功能权限才能拦截 F10 / F11 / F12。若系统设置中已打开权限，请完全退出并重新打开 FineTune。"
+            "value": "媒体键需要辅助功能权限。若已允许却仍不可用，请移除旧 FineTune 条目，重新添加当前 App 并重启。"
           }
         }
       }

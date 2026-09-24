@@ -102,6 +102,8 @@ jobs:
 
           macOS 可能显示安全警告。蓝牙、USB、HDMI 和音频权限行为仍需在接有设备的 Mac 上验证。
 
+          测试包使用临时签名。更新后若辅助功能显示已允许但媒体键仍不可用，请在系统设置中移除旧的 FineTune 条目，重新添加当前安装的 App 并允许，然后重启 FineTune。
+
           源码提交：${GITHUB_SHA}
           构建记录：https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}
           DMG 的 SHA-256 见随附的 .sha256 文件。
