@@ -1,0 +1,98 @@
+name: Build 1.1 Test DMG
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test-dmg:
+    if: github.ref == 'refs/heads/main'
+    runs-on: macos-26
+    timeout-minutes: 30
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+
+      - name: Check Simplified Chinese localization
+        run: ./scripts/check-localization.sh
+
+      - name: Run unit tests
+        run: |
+          xcodebuild test \
+            -project FineTune.xcodeproj \
+            -scheme FineTune \
+            -configuration Debug \
+            -skip-testing:FineTuneUITests \
+            -resultBundlePath "$RUNNER_TEMP/TestResults.xcresult" \
+            CODE_SIGN_IDENTITY=- \
+            CODE_SIGNING_REQUIRED=NO
+
+      - name: Build Release app with ad hoc signature
+        run: |
+          xcodebuild build \
+            -project FineTune.xcodeproj \
+            -scheme FineTune \
+            -configuration Release \
+            -derivedDataPath "$RUNNER_TEMP/FineTuneDerivedData" \
+            CODE_SIGN_IDENTITY=- \
+            CODE_SIGNING_REQUIRED=NO
+
+          APP_PATH="$RUNNER_TEMP/FineTuneDerivedData/Build/Products/Release/FineTune.app"
+          test -d "$APP_PATH"
+          test "$(/usr/libexec/PlistBuddy -c 'Print CFBundleShortVersionString' "$APP_PATH/Contents/Info.plist")" = 1.1
+          codesign --verify --deep --strict --verbose=2 "$APP_PATH"
+          codesign -dv --verbose=4 "$APP_PATH" 2>&1 | grep -q 'Signature=adhoc'
+
+      - name: Create and verify test DMG
+        run: |
+          APP_PATH="$RUNNER_TEMP/FineTuneDerivedData/Build/Products/Release/FineTune.app"
+          DMG_NAME="FineTune-1.1-test-${GITHUB_RUN_NUMBER}.dmg"
+          MOUNT_POINT="$RUNNER_TEMP/FineTuneTestMount"
+
+          mkdir -p dist/staging "$MOUNT_POINT"
+          cp -R "$APP_PATH" dist/staging/FineTune.app
+          ln -s /Applications dist/staging/Applications
+          hdiutil create -volname "FineTune 1.1 Test" \
+            -srcfolder dist/staging -ov -format UDZO "dist/$DMG_NAME"
+          hdiutil verify "dist/$DMG_NAME"
+
+          hdiutil attach -readonly -nobrowse -mountpoint "$MOUNT_POINT" "dist/$DMG_NAME"
+          trap 'hdiutil detach "$MOUNT_POINT"' EXIT
+          test -d "$MOUNT_POINT/FineTune.app"
+          test "$(readlink "$MOUNT_POINT/Applications")" = /Applications
+          codesign --verify --deep --strict --verbose=2 "$MOUNT_POINT/FineTune.app"
+          hdiutil detach "$MOUNT_POINT"
+          trap - EXIT
+
+          (cd dist && shasum -a 256 "$DMG_NAME" > "$DMG_NAME.sha256")
+          echo "DMG_NAME=$DMG_NAME" >> "$GITHUB_ENV"
+
+      - name: Create GitHub prerelease
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="test-1.1-${GITHUB_RUN_NUMBER}"
+          cat > dist/release-notes.md <<EOF
+          FineTune 1.1 测试版，未经 Apple Developer ID 签名或公证，仅供知情测试者使用。
+
+          macOS 可能显示安全警告。蓝牙、USB、HDMI 和音频权限行为仍需在接有设备的 Mac 上验证。
+
+          源码提交：${GITHUB_SHA}
+          构建记录：https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}
+          DMG 的 SHA-256 见随附的 .sha256 文件。
+          EOF
+
+          gh release create "$TAG" \
+            "dist/$DMG_NAME" "dist/$DMG_NAME.sha256" \
+            --target "$GITHUB_SHA" \
+            --title "FineTune 1.1 测试版（未公证）" \
+            --notes-file dist/release-notes.md \
+            --prerelease \
+            --latest=false
