@@ -777,6 +777,21 @@ struct MenuBarPopupView: View {
                                 }
                             }
                         )
+                    case .inactive(let app):
+                        AppEditRow(
+                            icon: app.icon,
+                            name: app.name,
+                            isIgnored: false,
+                            isPinned: audioEngine.isPinned(app),
+                            onToggleVisibility: { audioEngine.ignoreApp(app) },
+                            onTogglePin: {
+                                if audioEngine.isPinned(app) {
+                                    audioEngine.unpinApp(app.persistenceIdentifier)
+                                } else {
+                                    audioEngine.pinApp(app)
+                                }
+                            }
+                        )
                     case .pinnedInactive(let info):
                         AppEditRow(
                             icon: displayableApp.icon,
@@ -834,6 +849,14 @@ struct MenuBarPopupView: View {
                 switch displayableApp {
                 case .active(let app):
                     activeAppRow(app: app, displayableApp: displayableApp, userPresets: presets, scrollProxy: scrollProxy)
+
+                case .inactive(let app):
+                    let info = PinnedAppInfo(
+                        persistenceIdentifier: app.persistenceIdentifier,
+                        displayName: app.name,
+                        bundleID: app.bundleID
+                    )
+                    inactiveAppRow(info: info, displayableApp: displayableApp, userPresets: presets, scrollProxy: scrollProxy)
 
                 case .pinnedInactive(let info):
                     inactiveAppRow(info: info, displayableApp: displayableApp, userPresets: presets, scrollProxy: scrollProxy)
