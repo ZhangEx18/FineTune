@@ -224,6 +224,7 @@ struct AppSettingsDefaultTests {
         #expect(settings.launchAtLogin == false)
         #expect(settings.menuBarIconStyle == .default)
         #expect(settings.defaultNewAppVolume == 1.0)
+        #expect(settings.autoSwitchNewHeadphoneOutput == true)
         #expect(settings.lockInputDevice == true)
         #expect(settings.showDeviceDisconnectAlerts == true)
     }

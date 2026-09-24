@@ -35,11 +35,6 @@ struct AudioTab: View {
         .scrollIndicators(.never)
         .onAppear { updateSortedDevices() }
         .onChange(of: audioEngine.outputDevices) { _, _ in updateSortedDevices() }
-        .onChange(of: settings.appSettings.lockInputDevice) { oldValue, newValue in
-            if !oldValue && newValue {
-                audioEngine.handleInputLockEnabled()
-            }
-        }
         .onChange(of: settings.appSettings.loudnessCompensationEnabled) { _, newValue in
             audioEngine.setLoudnessCompensationEnabled(newValue)
         }
@@ -79,16 +74,6 @@ struct AudioTab: View {
 
     private var devicesSection: some View {
         SettingsSection("Devices") {
-            SettingsRow(
-                "Lock Input Device",
-                description: "Prevent auto-switching when devices connect"
-            ) {
-                Toggle("", isOn: $settings.appSettings.lockInputDevice)
-                    .toggleStyle(.switch)
-                    .controlSize(.small)
-                    .labelsHidden()
-            }
-            SettingsRowDivider()
             SettingsRow(
                 "System Sounds",
                 description: "Where alerts and effects play"

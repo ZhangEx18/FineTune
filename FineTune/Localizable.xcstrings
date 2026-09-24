@@ -1362,6 +1362,46 @@
         }
       }
     },
+    "Auto-switch headphone output": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "自动切换耳机输出"
+          }
+        }
+      }
+    },
+    "Make a newly connected Bluetooth, USB, or headphone device the default output immediately": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "新接入的蓝牙、USB 或耳机类设备立即成为默认输出"
+          }
+        }
+      }
+    },
+    "Auto-switch microphone": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "自动切换麦克风"
+          }
+        }
+      }
+    },
+    "Make a newly connected microphone the default input immediately": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "新接入的麦克风立即成为默认输入"
+          }
+        }
+      }
+    },
     "Menu Bar": {
       "localizations": {
         "zh-Hans": {
