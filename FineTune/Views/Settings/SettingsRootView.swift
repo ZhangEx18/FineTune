@@ -23,6 +23,8 @@ struct SettingsRootView: View {
         TabView(selection: $selection) {
             GeneralTab(
                 settings: settings,
+                permission: audioEngine.permission,
+                accessibility: accessibility,
                 onResetAll: {
                     audioEngine.handleSettingsReset()
                     deviceVolumeMonitor.setSystemFollowDefault()
