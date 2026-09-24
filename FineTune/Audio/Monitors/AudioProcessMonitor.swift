@@ -40,6 +40,7 @@ final class AudioProcessMonitor: AudioProcessMonitoring {
         "com.apple.springboard",
         "com.apple.notificationcenter",
         "com.apple.NotificationCenter",
+        "com.apple.controlcenter",
         "com.apple.UserNotifications",
         "com.apple.usernotifications",
         "com.apple.SpeechRecognitionCore",
@@ -60,6 +61,8 @@ final class AudioProcessMonitor: AudioProcessMonitoring {
         "speechrecognitiond",
         "dictationd",
         "corespeech",
+        "controlcenter",
+        "control center",
     ]
 
     /// Returns true if the bundle ID or process name indicates a system daemon that should be filtered
