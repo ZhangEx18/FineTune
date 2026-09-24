@@ -47,8 +47,26 @@ jobs:
           APP_PATH="$RUNNER_TEMP/FineTuneDerivedData/Build/Products/Release/FineTune.app"
           test -d "$APP_PATH"
           test "$(/usr/libexec/PlistBuddy -c 'Print CFBundleShortVersionString' "$APP_PATH/Contents/Info.plist")" = 1.1
+
+          # Ad hoc signatures have no Team ID; let this test build load its bundled Sparkle framework.
+          TEST_ENTITLEMENTS="$RUNNER_TEMP/FineTuneTest.entitlements"
+          cp FineTune/FineTune.entitlements "$TEST_ENTITLEMENTS"
+          /usr/libexec/PlistBuddy -c 'Add :com.apple.security.cs.disable-library-validation bool true' "$TEST_ENTITLEMENTS"
+          codesign --force --sign - --options runtime --entitlements "$TEST_ENTITLEMENTS" "$APP_PATH"
           codesign --verify --deep --strict --verbose=2 "$APP_PATH"
           codesign -dv --verbose=4 "$APP_PATH" 2>&1 | grep -q 'Signature=adhoc'
+
+          "$APP_PATH/Contents/MacOS/FineTune" > "$RUNNER_TEMP/FineTuneLaunch.log" 2>&1 &
+          APP_PID=$!
+          trap 'kill "$APP_PID" 2>/dev/null || true' EXIT
+          sleep 4
+          if ! kill -0 "$APP_PID" 2>/dev/null; then
+            cat "$RUNNER_TEMP/FineTuneLaunch.log"
+            exit 1
+          fi
+          kill "$APP_PID"
+          wait "$APP_PID" || true
+          trap - EXIT
 
       - name: Create and verify test DMG
         run: |
