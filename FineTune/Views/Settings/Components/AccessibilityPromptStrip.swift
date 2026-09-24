@@ -86,7 +86,7 @@ struct AccessibilityPromptStrip: View {
     private var message: String {
         showingGrantedFlourish
             ? "Access granted — volume keys now control FineTune."
-            : "FineTune needs Accessibility to intercept F10 / F11 / F12."
+            : "FineTune needs Accessibility to intercept F10 / F11 / F12. If already enabled, quit and reopen FineTune."
     }
 
     private func triggerGrantedFlourish() {
