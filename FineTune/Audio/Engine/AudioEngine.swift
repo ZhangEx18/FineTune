@@ -414,6 +414,13 @@ final class AudioEngine {
             .filter { !appListCoordinator.isIgnored(identifier: $0.persistenceIdentifier) }
         let activeIdentifiers = Set(activeApps.map { $0.persistenceIdentifier })
 
+        let pausedApps = processMonitor.inactiveApps
+            .filter {
+                !activeIdentifiers.contains($0.persistenceIdentifier)
+                    && !appListCoordinator.isIgnored(identifier: $0.persistenceIdentifier)
+                    && !appListCoordinator.isPinned(identifier: $0.persistenceIdentifier)
+            }
+
         // Get pinned apps that are not currently active
         let pinnedInactiveInfos = appListCoordinator.pinnedAppInfo()
             .filter { !activeIdentifiers.contains($0.persistenceIdentifier) }
@@ -429,13 +436,17 @@ final class AudioEngine {
             .sorted { $0.displayName.localizedCaseInsensitiveCompare($1.displayName) == .orderedAscending }
             .map { DisplayableApp.pinnedInactive($0) }
 
+        let pausedInactive = pausedApps
+            .sorted { $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending }
+            .map { DisplayableApp.inactive($0) }
+
         // Unpinned active apps (sorted alphabetically)
         let unpinnedActive = activeApps
             .filter { !appListCoordinator.isPinned(identifier: $0.persistenceIdentifier) }
             .sorted { $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending }
             .map { DisplayableApp.active($0) }
 
-        return pinnedActive + pinnedInactive + unpinnedActive
+        return pinnedActive + pinnedInactive + pausedInactive + unpinnedActive
     }
 
     // MARK: - Pinning

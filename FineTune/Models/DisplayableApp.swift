@@ -6,11 +6,14 @@ import UniformTypeIdentifiers
 /// or pinned but inactive (not currently running or producing audio).
 enum DisplayableApp: Identifiable {
     case active(AudioApp)
+    case inactive(AudioApp)
     case pinnedInactive(PinnedAppInfo)
 
     var id: String {
         switch self {
         case .active(let app):
+            return app.persistenceIdentifier
+        case .inactive(let app):
             return app.persistenceIdentifier
         case .pinnedInactive(let info):
             return info.persistenceIdentifier
@@ -23,6 +26,8 @@ enum DisplayableApp: Identifiable {
         switch self {
         case .active:
             return false
+        case .inactive:
+            return false
         case .pinnedInactive:
             return true
         }
@@ -32,7 +37,7 @@ enum DisplayableApp: Identifiable {
         switch self {
         case .active:
             return true
-        case .pinnedInactive:
+        case .inactive, .pinnedInactive:
             return false
         }
     }
@@ -40,6 +45,8 @@ enum DisplayableApp: Identifiable {
     var displayName: String {
         switch self {
         case .active(let app):
+            return app.name
+        case .inactive(let app):
             return app.name
         case .pinnedInactive(let info):
             return info.displayName
@@ -49,6 +56,8 @@ enum DisplayableApp: Identifiable {
     var icon: NSImage {
         switch self {
         case .active(let app):
+            return app.icon
+        case .inactive(let app):
             return app.icon
         case .pinnedInactive(let info):
             return Self.loadIcon(bundleID: info.bundleID)

@@ -13,7 +13,12 @@ private struct AppFingerprint: Hashable {
 @MainActor
 final class AudioProcessMonitor: AudioProcessMonitoring {
     private(set) var activeApps: [AudioApp] = []
+    private(set) var inactiveApps: [AudioApp] = []
     var onAppsChanged: (([AudioApp]) -> Void)?
+
+    /// Keeps the last complete app metadata snapshot so pausing playback does not
+    /// erase the row or its real application icon from the popup.
+    private var knownApps: [String: AudioApp] = [:]
 
     private let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "FineTune", category: "AudioProcessMonitor")
 
@@ -106,10 +111,15 @@ final class AudioProcessMonitor: AudioProcessMonitoring {
         for pid: pid_t,
         in runningAppsByPID: [pid_t: NSRunningApplication]
     ) -> NSRunningApplication? {
+        func isPrimaryApp(_ app: NSRunningApplication) -> Bool {
+            guard let path = app.bundleURL?.path else { return false }
+            return path.hasSuffix(".app") && !path.contains("/Contents/Frameworks/")
+        }
+
         // First try Apple's responsibility API (works for XPC services like Safari's WebKit processes)
         if let responsiblePID = getResponsiblePID(for: pid),
            let app = runningAppsByPID[responsiblePID],
-           app.bundleURL?.pathExtension == "app" {
+           isPrimaryApp(app) {
             return app
         }
 
@@ -122,7 +132,7 @@ final class AudioProcessMonitor: AudioProcessMonitoring {
 
             // Check if this PID is a proper app bundle (.app, not .xpc service)
             if let app = runningAppsByPID[currentPID],
-               app.bundleURL?.pathExtension == "app" {
+               isPrimaryApp(app) {
                 return app
             }
 
@@ -221,7 +231,9 @@ final class AudioProcessMonitor: AudioProcessMonitoring {
                 let directApp = runningAppsByPID[pid]
 
                 // Check if it's a real app bundle (.app), not an XPC service (.xpc)
-                let isRealApp = directApp?.bundleURL?.pathExtension == "app"
+                let isRealApp = directApp?.bundleURL.map { url in
+                    url.pathExtension == "app" && !url.path.contains("/Contents/Frameworks/")
+                } == true
                 let resolvedApp = isRealApp ? directApp : findResponsibleApp(for: pid, in: runningAppsByPID)
                 let parentPID = resolvedApp?.processIdentifier ?? pid
                 let isHelper = parentPID != pid
@@ -231,6 +243,7 @@ final class AudioProcessMonitor: AudioProcessMonitoring {
                     ?? objectID.readProcessBundleID()?.components(separatedBy: ".").last
                     ?? "Unknown"
                 let icon = resolvedApp?.icon
+                    ?? resolvedApp?.bundleURL.map { NSWorkspace.shared.icon(forFile: $0.path) }
                     ?? NSImage(systemSymbolName: "app.fill", accessibilityDescription: nil)
                     ?? NSImage()
                 let bundleID = resolvedApp?.bundleIdentifier ?? objectID.readProcessBundleID()
@@ -270,12 +283,27 @@ final class AudioProcessMonitor: AudioProcessMonitoring {
 
             let sorted = appsByPID.values.sorted { $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending }
 
+            let activeIdentifiers = Set(sorted.map { $0.persistenceIdentifier })
+            for app in sorted {
+                knownApps[app.persistenceIdentifier] = app
+            }
+            let runningBundleIDs = Set(runningApps.compactMap(\.bundleIdentifier))
+            let sortedInactive = knownApps.values
+                .filter { app in
+                    !activeIdentifiers.contains(app.persistenceIdentifier)
+                        && app.bundleID.map(runningBundleIDs.contains) == true
+                }
+                .sorted { $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending }
+
             // Only fire callback if the app list actually changed (avoids churn from periodic refresh)
             let oldSet = Set(activeApps.map { AppFingerprint(pid: $0.id, objectIDs: $0.processObjectIDs) })
             let newSet = Set(sorted.map { AppFingerprint(pid: $0.id, objectIDs: $0.processObjectIDs) })
+            let oldInactiveSet = Set(inactiveApps.map { $0.persistenceIdentifier })
+            let newInactiveSet = Set(sortedInactive.map { $0.persistenceIdentifier })
 
             activeApps = sorted
-            if oldSet != newSet {
+            inactiveApps = sortedInactive
+            if oldSet != newSet || oldInactiveSet != newInactiveSet {
                 onAppsChanged?(activeApps)
             }
 
