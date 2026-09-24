@@ -128,7 +128,10 @@ enum DeviceIconCatalog {
         guard !q.isEmpty else { return allEntries }
         return allEntries.filter { entry in
             entry.symbol.lowercased().contains(q)
-                || entry.keywords.contains { $0.lowercased().contains(q) }
+                || entry.keywords.contains {
+                    $0.lowercased().contains(q)
+                        || NSLocalizedString($0, comment: "Device icon search keyword").lowercased().contains(q)
+                }
         }
     }
 

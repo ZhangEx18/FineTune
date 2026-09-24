@@ -191,8 +191,13 @@ private struct IconCell: View {
         .buttonStyle(.plain)
         .onHover { isHovered = $0 }
         .animation(DesignTokens.Animation.hover, value: isHovered)
-        .help(symbol)
-        .accessibilityLabel(DeviceIconCatalog.entry(for: symbol)?.keywords.first?.capitalized ?? symbol)
+        .help(localizedName)
+        .accessibilityLabel(localizedName)
+    }
+
+    private var localizedName: String {
+        guard let keyword = DeviceIconCatalog.entry(for: symbol)?.keywords.first else { return symbol }
+        return NSLocalizedString(keyword, comment: "Device icon name")
     }
 
     private var fill: Color {

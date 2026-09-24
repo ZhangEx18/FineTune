@@ -61,7 +61,7 @@ struct DeviceInspectorInfoGrid: View {
 
     @ViewBuilder
     private func labelCell(_ text: String) -> some View {
-        Text(text)
+        Text(LocalizedStringKey(text))
             .font(DesignTokens.Typography.pickerText)
             .foregroundStyle(DesignTokens.Colors.textSecondary)
             .gridColumnAlignment(.leading)

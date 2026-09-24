@@ -354,21 +354,21 @@ final class HUDWindowController: MediaKeyHUDPresenting {
     }
 
     private func accessibilityDescription(sliderFraction: Double, mute: Bool, deviceName: String) -> String {
-        let device = deviceName.isEmpty ? "Unknown device" : deviceName
-        if mute { return "\(device), muted" }
+        let device = deviceName.isEmpty ? String(localized: "Unknown device") : deviceName
+        if mute { return String(localized: "\(device), muted") }
         let clamped = max(0, min(1, sliderFraction))
-        return "\(device), volume \(Int((clamped * 100).rounded())) percent"
+        return String(localized: "\(device), volume \(Int((clamped * 100).rounded())) percent")
     }
 
     private func postPerAppAccessibilityAnnouncement(panel: NSPanel, title: String, content: PerAppHUDContent) {
         let description: String
         switch content {
         case .volume(let sliderFraction):
-            description = "\(title), volume \(Int((sliderFraction * 100).rounded())) percent"
+            description = String(localized: "\(title), volume \(Int((sliderFraction * 100).rounded())) percent")
         case .mute(let isMuted):
-            description = isMuted ? "\(title), muted" : "\(title), unmuted"
+            description = isMuted ? String(localized: "\(title), muted") : String(localized: "\(title), unmuted")
         case .notControlled:
-            description = "\(title), not controlled by FineTune"
+            description = String(localized: "\(title), not controlled by FineTune")
         }
         NSAccessibility.post(
             element: panel,
@@ -454,7 +454,7 @@ private struct PerAppHUD: View {
     private static let barHeight: CGFloat = 4
 
     private var subtitleText: String? {
-        if case .notControlled = content { return "Not controlled by FineTune" }
+        if case .notControlled = content { return String(localized: "Not controlled by FineTune") }
         return nil
     }
 
@@ -494,11 +494,11 @@ private struct PerAppHUD: View {
     private var accessibilityDescription: String {
         switch content {
         case .volume:
-            return "\(title), volume \(Int((displayLevel * 100).rounded())) percent"
+            return String(localized: "\(title), volume \(Int((displayLevel * 100).rounded())) percent")
         case .mute(let isMuted):
-            return isMuted ? "\(title), muted" : "\(title), unmuted"
+            return isMuted ? String(localized: "\(title), muted") : String(localized: "\(title), unmuted")
         case .notControlled:
-            return "\(title), not controlled by FineTune"
+            return String(localized: "\(title), not controlled by FineTune")
         }
     }
 

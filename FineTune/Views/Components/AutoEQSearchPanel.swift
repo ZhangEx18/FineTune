@@ -95,7 +95,7 @@ struct AutoEQSearchPanel: View {
     private var cardProfileInfo: (name: String, source: String?)? {
         guard let selectedID = selectedProfileID else { return nil }
         if let profile = profileManager.profile(for: selectedID) {
-            let source = profile.source == .imported ? "Imported" : profile.measuredBy
+            let source = profile.source == .imported ? String(localized: "Imported") : profile.measuredBy
             return (profile.name, source)
         } else if let entry = profileManager.catalogEntry(for: selectedID) {
             return (entry.name, entry.measuredBy)
@@ -333,12 +333,12 @@ struct AutoEQSearchPanel: View {
         action: @escaping () -> Void
     ) -> some View {
         HStack(spacing: DesignTokens.Spacing.xs) {
-            Text(label)
+            Text(LocalizedStringKey(label))
                 .font(.system(size: 10))
                 .foregroundStyle(DesignTokens.Colors.autoEQToggleLabel)
 
             Toggle(
-                label,
+                LocalizedStringKey(label),
                 isOn: Binding(get: { isOn }, set: { _ in action() })
             )
             .toggleStyle(.switch)
@@ -347,7 +347,7 @@ struct AutoEQSearchPanel: View {
             .labelsHidden()
         }
         .accessibilityElement(children: .combine)
-        .accessibilityLabel(label)
+        .accessibilityLabel(Text(LocalizedStringKey(label)))
         .accessibilityValue(isOn ? "On" : "Off")
     }
 

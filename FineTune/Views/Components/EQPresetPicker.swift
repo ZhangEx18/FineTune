@@ -17,8 +17,8 @@ enum EQPickerSection: Identifiable, Hashable {
 
     var title: String {
         switch self {
-        case .myPresets: return "My Presets"
-        case .builtIn(let cat): return cat.rawValue
+        case .myPresets: return NSLocalizedString("My Presets", comment: "EQ preset group")
+        case .builtIn(let cat): return NSLocalizedString(cat.rawValue, comment: "EQ preset group")
         }
     }
 }
@@ -32,7 +32,7 @@ struct EQPickerItem: Identifiable, Hashable {
 
     init(builtIn preset: EQPreset) {
         self.id = "builtin-\(preset.id)"
-        self.name = preset.name
+        self.name = NSLocalizedString(preset.name, comment: "Built-in EQ preset")
         self.builtInPreset = preset
         self.userPresetID = nil
     }
@@ -98,7 +98,7 @@ struct EQPresetPicker: View {
             popoverWidth: 170,
             onSelect: handleSelect
         ) { selected in
-            Text(selected?.name ?? "Custom")
+            Text(selected?.name ?? String(localized: "Custom"))
         } itemContent: { item, isSelected in
             if item.isUserPreset {
                 UserPresetItemView(
