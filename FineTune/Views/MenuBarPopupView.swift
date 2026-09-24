@@ -135,6 +135,11 @@ struct MenuBarPopupView: View {
                     }
                 }
             }
+
+            Divider()
+                .padding(.vertical, DesignTokens.Spacing.xs)
+
+            quitFooter
         }
         .padding(popupDimensions.contentPadding)
         .frame(width: popupDimensions.width)
@@ -340,30 +345,28 @@ struct MenuBarPopupView: View {
 
             // Apps section (active + pinned inactive + hidden in edit mode)
             appsSection(scrollProxy: scrollProxy)
+        }
+    }
 
-            Divider()
-                .padding(.vertical, DesignTokens.Spacing.xs)
+    private var quitFooter: some View {
+        HStack {
+            Spacer()
 
-            // Footer: quit
-            HStack {
-                Button {
-                    NSApplication.shared.terminate(nil)
-                } label: {
-                    HStack(spacing: 6) {
-                        Text("Quit")
-                        Text("⌘Q")
-                            .foregroundStyle(DesignTokens.Colors.textTertiary)
-                    }
+            Button {
+                NSApplication.shared.terminate(nil)
+            } label: {
+                HStack(spacing: 6) {
+                    Text("Quit")
+                    Text("⌘Q")
+                        .foregroundStyle(DesignTokens.Colors.textTertiary)
                 }
-                .buttonStyle(.plain)
-                .font(DesignTokens.Typography.caption)
-                .foregroundStyle(DesignTokens.Colors.textSecondary)
-                .glassButtonStyle()
-                .accessibilityLabel("Quit FineTune")
-                .help("Quit FineTune (⌘Q)")
-
-                Spacer()
             }
+            .buttonStyle(.plain)
+            .font(DesignTokens.Typography.caption)
+            .foregroundStyle(DesignTokens.Colors.textSecondary)
+            .glassButtonStyle()
+            .accessibilityLabel("Quit FineTune")
+            .help("Quit FineTune (⌘Q)")
         }
     }
 
