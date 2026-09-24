@@ -438,7 +438,16 @@
         }
       }
     },
-    "Expanded detail content here": {},
+    "Expanded detail content here": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "详细信息将在此展开"
+          }
+        }
+      }
+    },
     "FAVORITES": {
       "localizations": {
         "zh-Hans": {
