@@ -7,7 +7,6 @@ import SwiftUI
 struct GeneralTab: View {
     @Bindable var settings: SettingsManager
     @Bindable var permission: AudioRecordingPermission
-    @Bindable var accessibility: AccessibilityPermissionService
     let onResetAll: () -> Void
 
     @State private var showResetConfirmation = false
@@ -46,18 +45,6 @@ struct GeneralTab: View {
 
     private var permissionsSection: some View {
         SettingsSection("权限") {
-            SettingsRow(
-                "辅助功能",
-                description: "拦截 F10、F11、F12 媒体键"
-            ) {
-                permissionStatus(accessibility.isTrustedCached)
-                Button("打开设置") {
-                    accessibility.requestAccess()
-                }
-                .buttonStyle(.plain)
-                .foregroundStyle(DesignTokens.Colors.accentPrimary)
-            }
-            SettingsRowDivider()
             SettingsRow(
                 "音频采集",
                 description: "控制单个应用音量和路由时需要"
