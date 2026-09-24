@@ -19,7 +19,6 @@ jobs:
         env:
           APPLE_CERTIFICATE_BASE64: ${{ secrets.APPLE_CERTIFICATE_BASE64 }}
           APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
-          KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
           APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
           CERT_IDENTITY: ${{ secrets.CERT_IDENTITY }}
           APPLE_ID: ${{ secrets.APPLE_ID }}
@@ -27,7 +26,7 @@ jobs:
           SPARKLE_PRIVATE_KEY: ${{ secrets.SPARKLE_PRIVATE_KEY }}
         run: |
           missing=0
-          for name in APPLE_CERTIFICATE_BASE64 APPLE_CERTIFICATE_PASSWORD KEYCHAIN_PASSWORD APPLE_TEAM_ID CERT_IDENTITY APPLE_ID APPLE_ID_PASSWORD SPARKLE_PRIVATE_KEY; do
+          for name in APPLE_CERTIFICATE_BASE64 APPLE_CERTIFICATE_PASSWORD APPLE_TEAM_ID CERT_IDENTITY APPLE_ID APPLE_ID_PASSWORD SPARKLE_PRIVATE_KEY; do
             if [ -z "${!name}" ]; then
               echo "::error::Missing required release secret: $name"
               missing=1
@@ -55,9 +54,9 @@ jobs:
         env:
           APPLE_CERTIFICATE_BASE64: ${{ secrets.APPLE_CERTIFICATE_BASE64 }}
           APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
-          KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
         run: |
           KEYCHAIN_PATH="$RUNNER_TEMP/build.keychain"
+          KEYCHAIN_PASSWORD="$(openssl rand -hex 24)"
 
           # Decode certificate
           echo "$APPLE_CERTIFICATE_BASE64" | base64 --decode > $RUNNER_TEMP/certificate.p12
