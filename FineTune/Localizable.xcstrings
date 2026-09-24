@@ -367,26 +367,6 @@
         }
       }
     },
-    "Donate": {
-      "localizations": {
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "赞助"
-          }
-        }
-      }
-    },
-    "Donate to FineTune": {
-      "localizations": {
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "赞助 FineTune"
-          }
-        }
-      }
-    },
     "Done reordering": {
       "localizations": {
         "zh-Hans": {
