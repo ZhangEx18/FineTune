@@ -39,23 +39,13 @@ struct AboutTab: View {
 
             Spacer()
 
-            HStack(spacing: 8) {
-                AboutLinkChip(
-                    label: "Donate",
-                    icon: "heart.fill",
-                    hoverIcon: "heart.fill",
-                    hoverColor: .pink,
-                    url: DesignTokens.Links.support,
-                    isPrimary: true
-                )
-                AboutLinkChip(
-                    label: "Star on GitHub",
-                    icon: "star",
-                    hoverIcon: "star.fill",
-                    hoverColor: .yellow,
-                    url: URL(string: "https://github.com/ronitsingh10/FineTune")!
-                )
-            }
+            AboutLinkChip(
+                label: "GitHub 主页",
+                icon: "person.crop.circle",
+                hoverIcon: "person.crop.circle.fill",
+                hoverColor: .blue,
+                url: URL(string: "https://github.com/ZhangEx18")!
+            )
 
             footer
                 .padding(.top, 16)

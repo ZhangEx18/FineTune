@@ -24,6 +24,7 @@ final class AccessibilityPermissionService: AccessibilityTrustProviding {
 
     private var trustObserver: NSObjectProtocol?
     private var debounceTask: Task<Void, Never>?
+    private var pollingTask: Task<Void, Never>?
 
     private let logger = Logger(subsystem: "com.finetuneapp.FineTune", category: "AccessibilityPermissionService")
 
@@ -51,14 +52,23 @@ final class AccessibilityPermissionService: AccessibilityTrustProviding {
 
     /// Idempotent. Subscribes to `com.apple.accessibility.api`.
     func start() {
-        guard trustObserver == nil else { return }
-        trustObserver = DistributedNotificationCenter.default().addObserver(
-            forName: Notification.Name("com.apple.accessibility.api"),
-            object: nil,
-            queue: .main
-        ) { [weak self] _ in
-            MainActor.assumeIsolated {
-                self?.scheduleDebouncedRefresh()
+        if trustObserver == nil {
+            trustObserver = DistributedNotificationCenter.default().addObserver(
+                forName: Notification.Name("com.apple.accessibility.api"),
+                object: nil,
+                queue: .main
+            ) { [weak self] _ in
+                MainActor.assumeIsolated {
+                    self?.scheduleDebouncedRefresh()
+                }
+            }
+        }
+        guard pollingTask == nil else { return }
+        pollingTask = Task { @MainActor [weak self] in
+            while !Task.isCancelled {
+                try? await Task.sleep(for: .seconds(1))
+                guard !Task.isCancelled, let self else { return }
+                self.refresh()
             }
         }
     }
@@ -67,6 +77,8 @@ final class AccessibilityPermissionService: AccessibilityTrustProviding {
     func stop() {
         debounceTask?.cancel()
         debounceTask = nil
+        pollingTask?.cancel()
+        pollingTask = nil
         if let observer = trustObserver {
             DistributedNotificationCenter.default().removeObserver(observer)
             trustObserver = nil
@@ -104,6 +116,7 @@ final class AccessibilityPermissionService: AccessibilityTrustProviding {
     /// Registers in the AX list and opens System Settings as a cross-version fallback.
     func requestAccess() {
         let trusted = promptForTrust()
+        scheduleDebouncedRefresh()
         if !trusted {
             openSystemSettings()
         }

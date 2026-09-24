@@ -1518,17 +1518,9 @@ final class AudioEngine {
             }
         }
 
-        // Only override the default if the newly connected device IS the highest-priority
-        // device (i.e., a higher-priority device just came back). If a lower-priority device
-        // connects while the user is on a higher-priority device, respect the current default —
-        // the user chose it. We still enter PENDING_AUTOSWITCH to guard against macOS
-        // auto-switching to the new device.
         let currentDefault = deviceVolumeMonitor.defaultDeviceUID
-        let isNewDeviceHigherPriority = (deviceUID == Self.resolveHighestPriority(
-            priorityOrder: settingsManager.devicePriorityOrder,
-            connectedDevices: outputDevices,
-            isAlive: isAliveCheck
-        )?.uid)
+        let connectedDevice = deviceMonitor.device(for: deviceUID)
+        let autoSwitchEligible = connectedDevice?.supportsAutoEQ == true
 
         // If this device is present but not alive, watch for it to become alive
         if let device = deviceMonitor.device(for: deviceUID),
@@ -1536,12 +1528,15 @@ final class AudioEngine {
             installAliveWatcher(deviceID: device.id, uid: deviceUID, name: deviceName)
         }
 
-        if isNewDeviceHigherPriority, deviceUID != currentDefault {
-            // A higher-priority device reconnected — switch to it
-            reEvaluateOutputDefault()
-        } else if !isNewDeviceHigherPriority, currentDefault == deviceUID {
-            // macOS already auto-switched to the lower-priority device — restore
-            // what the user was on (not highest priority — they may have chosen a mid-priority device)
+        if autoSwitchEligible, deviceUID != currentDefault, let connectedDevice {
+            if deviceVolumeMonitor.setDefaultDevice(connectedDevice.id) {
+                outputEchoTracker.increment(deviceUID)
+                lastConfirmedDefaultUID = deviceUID
+                routeFollowsDefaultApps(to: deviceUID)
+                logger.info("Headphone connected, switched default output → \(deviceName)")
+            }
+        } else if !autoSwitchEligible, currentDefault == deviceUID {
+            // Non-headphone devices must not take over the default output.
             restoreConfirmedDefault()
         }
 
@@ -1551,7 +1546,12 @@ final class AudioEngine {
             outputPriorityState = .stable
         }
 
-        // Always enter PENDING_AUTOSWITCH for the newly connected device.
+        guard autoSwitchEligible else {
+            outputPriorityState = .stable
+            return
+        }
+
+        // Enter PENDING_AUTOSWITCH only for headphone-like devices.
         // macOS may auto-switch to it multiple times during BT firmware handshake.
         // Without this grace period, auto-switches would be treated as "genuine user change".
         let transport = deviceMonitor.device(for: deviceUID)?.id.readTransportType()

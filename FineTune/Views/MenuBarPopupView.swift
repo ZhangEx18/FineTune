@@ -74,7 +74,6 @@ struct MenuBarPopupView: View {
     @State private var expandedDeviceUID: String?
 
     /// Hover state for support link heart animation
-    @State private var isSupportHovered = false
 
     /// Namespace for device toggle animation
     @Namespace private var deviceToggleNamespace
@@ -345,26 +344,8 @@ struct MenuBarPopupView: View {
             Divider()
                 .padding(.vertical, DesignTokens.Spacing.xs)
 
-            // Footer: support link + quit
+            // Footer: quit
             HStack {
-                Button {
-                    NSWorkspace.shared.open(DesignTokens.Links.support)
-                } label: {
-                    Label("Donate", systemImage: isSupportHovered ? "heart.fill" : "heart")
-                }
-                .buttonStyle(.plain)
-                .font(.system(size: 12, weight: .medium))
-                .foregroundStyle(isSupportHovered ? Color(nsColor: .systemPink) : DesignTokens.Colors.textTertiary)
-                .onHover { hovering in
-                    withAnimation(DesignTokens.Animation.hover) {
-                        isSupportHovered = hovering
-                    }
-                }
-                .accessibilityLabel("Donate to FineTune")
-                .help("Donate to FineTune")
-
-                Spacer()
-
                 Button {
                     NSApplication.shared.terminate(nil)
                 } label: {
@@ -380,6 +361,8 @@ struct MenuBarPopupView: View {
                 .glassButtonStyle()
                 .accessibilityLabel("Quit FineTune")
                 .help("Quit FineTune (⌘Q)")
+
+                Spacer()
             }
         }
     }
