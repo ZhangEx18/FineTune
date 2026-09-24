@@ -4,13 +4,13 @@
 
 为每一个 App 单独控制音量、把过轻的声音最高放大 4 倍、把音频路由到不同的扬声器，再用 EQ 和耳机曲线把声音调到自己喜欢的样子。常驻菜单栏，免费且开源。
 
-<a href="https://github.com/ronitsingh10/FineTune/releases/latest/download/FineTune.dmg"><img src="assets/download-badge.svg" alt="下载 macOS 版本" height="48"/></a>
+<a href="https://github.com/ZhangEx18/FineTune/releases/latest/download/FineTune.dmg"><img src="assets/download-badge.svg" alt="下载 macOS 版本" height="48"/></a>
 
 <br clear="all"/>
 
 <p align="center">
-  <a href="https://github.com/ronitsingh10/FineTune/releases/latest"><img src="https://img.shields.io/github/v/release/ronitsingh10/FineTune?style=for-the-badge&labelColor=1c1c1e&color=0A84FF&logo=github&logoColor=white" alt="最新版本"></a>
-  <a href="https://github.com/ronitsingh10/FineTune/releases"><img src="https://img.shields.io/github/downloads/ronitsingh10/FineTune/total?style=for-the-badge&labelColor=1c1c1e&color=3a3a3c" alt="下载量"></a>
+  <a href="https://github.com/ZhangEx18/FineTune/releases/latest"><img src="https://img.shields.io/github/v/release/ZhangEx18/FineTune?style=for-the-badge&labelColor=1c1c1e&color=0A84FF&logo=github&logoColor=white" alt="最新版本"></a>
+  <a href="https://github.com/ZhangEx18/FineTune/releases"><img src="https://img.shields.io/github/downloads/ZhangEx18/FineTune/total?style=for-the-badge&labelColor=1c1c1e&color=3a3a3c" alt="下载量"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-GPLv3-3a3a3c?style=for-the-badge&labelColor=1c1c1e" alt="许可证：GPL v3"></a>
   <a href="https://www.apple.com/macos/"><img src="https://img.shields.io/badge/macOS-15%2B-3a3a3c?style=for-the-badge&labelColor=1c1c1e&logo=apple&logoColor=white" alt="macOS 15+"></a>
 </p>
@@ -37,7 +37,7 @@
 brew install --cask finetune
 ```
 
-**手动安装** —— [下载最新版本](https://github.com/ronitsingh10/FineTune/releases/latest)
+**手动安装** —— [下载最新版本](https://github.com/ZhangEx18/FineTune/releases/latest)
 
 ## 快速上手
 
@@ -103,13 +103,13 @@ brew install --cask finetune
 ## 参与贡献
 
 - **给本仓库点 Star** —— 帮助更多人发现 FineTune
-- **报告 Bug** —— [新建 issue](https://github.com/ronitsingh10/FineTune/issues)
+- **报告 Bug** —— [新建 issue](https://github.com/ZhangEx18/FineTune/issues)
 - **贡献代码** —— 见 [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ### 从源码构建
 
 ```bash
-git clone https://github.com/ronitsingh10/FineTune.git
+git clone https://github.com/ZhangEx18/FineTune.git
 cd FineTune
 open FineTune.xcodeproj
 ```
