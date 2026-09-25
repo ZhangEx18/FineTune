@@ -41,6 +41,7 @@ final class AudioProcessMonitor: AudioProcessMonitoring {
         "com.apple.notificationcenter",
         "com.apple.NotificationCenter",
         "com.apple.controlcenter",
+        "com.apple.PowerChime",
         "com.apple.UserNotifications",
         "com.apple.usernotifications",
         "com.apple.SpeechRecognitionCore",
@@ -63,10 +64,18 @@ final class AudioProcessMonitor: AudioProcessMonitoring {
         "corespeech",
         "controlcenter",
         "control center",
+        "powerchime",
     ]
 
-    /// Returns true if the bundle ID or process name indicates a system daemon that should be filtered
-    private func isSystemDaemon(bundleID: String?, name: String) -> Bool {
+    /// Returns true if metadata identifies a system component that should be hidden
+    /// from the user-facing application list.
+    private func isSystemDaemon(bundleID: String?, name: String, bundleURL: URL?) -> Bool {
+        if let path = bundleURL?.standardizedFileURL.path,
+           path.hasPrefix("/System/Library/CoreServices/")
+            || path.hasPrefix("/System/Cryptexes/App/System/Library/CoreServices/") {
+            return true
+        }
+
         // Check bundle ID prefixes
         if let bundleID {
             if Self.systemDaemonPrefixes.contains(where: { bundleID.hasPrefix($0) }) {
@@ -251,8 +260,8 @@ final class AudioProcessMonitor: AudioProcessMonitoring {
                     ?? NSImage()
                 let bundleID = resolvedApp?.bundleIdentifier ?? objectID.readProcessBundleID()
 
-                // Skip system daemons (siri, coreaudio, etc.) - they shouldn't appear in the apps list
-                if isSystemDaemon(bundleID: bundleID, name: name) { continue }
+                // Skip system components; only user-facing applications belong in this list.
+                if isSystemDaemon(bundleID: bundleID, name: name, bundleURL: resolvedApp?.bundleURL) { continue }
 
                 // Merge helper process objectIDs into parent app entry
                 if let existing = appsByPID[parentPID] {
